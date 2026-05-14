@@ -1,0 +1,15 @@
+{
+  "app_name": "Aprender+",
+
+  "version": "1.0.0",
+
+  "battery_alert": 20,
+
+  "supported_languages": [
+    "pt",
+    "en",
+    "es"
+  ],
+
+  "default_theme": "light"
+}

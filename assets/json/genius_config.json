@@ -1,0 +1,96 @@
+{
+  "idiomas": [
+    {
+      "nome": "Português",
+
+      "cores": [
+        {
+          "nome": "Amarelo",
+          "audio": "assets/audio/genius/pt/amarelo.mp3"
+        },
+
+        {
+          "nome": "Azul",
+          "audio": "assets/audio/genius/pt/azul.mp3"
+        },
+
+        {
+          "nome": "Vermelho",
+          "audio": "assets/audio/genius/pt/vermelho.mp3"
+        },
+
+        {
+          "nome": "Laranja",
+          "audio": "assets/audio/genius/pt/laranja.mp3"
+        },
+
+        {
+          "nome": "Verde",
+          "audio": "assets/audio/genius/pt/verde.mp3"
+        }
+      ]
+    },
+
+    {
+      "nome": "English",
+
+      "cores": [
+        {
+          "nome": "Yellow",
+          "audio": "assets/audio/genius/en/yellow.mp3"
+        },
+
+        {
+          "nome": "Blue",
+          "audio": "assets/audio/genius/en/blue.mp3"
+        },
+
+        {
+          "nome": "Red",
+          "audio": "assets/audio/genius/en/red.mp3"
+        },
+
+        {
+          "nome": "Orange",
+          "audio": "assets/audio/genius/en/orange.mp3"
+        },
+
+        {
+          "nome": "Green",
+          "audio": "assets/audio/genius/en/green.mp3"
+        }
+      ]
+    },
+
+    {
+      "nome": "Español",
+
+      "cores": [
+        {
+          "nome": "Amarillo",
+          "audio": "assets/audio/genius/es/amarillo.mp3"
+        },
+
+        {
+          "nome": "Azul",
+          "audio": "assets/audio/genius/es/azul.mp3"
+        },
+
+        {
+          "nome": "Rojo",
+          "audio": "assets/audio/genius/es/rojo.mp3"
+        },
+
+        {
+          "nome": "Naranja",
+          "audio": "assets/audio/genius/es/naranja.mp3"
+        },
+
+        {
+          "nome": "Verde",
+          "audio": "assets/audio/genius/es/verde.mp3"
+        }
+      ]
+    }
+  ]
+}

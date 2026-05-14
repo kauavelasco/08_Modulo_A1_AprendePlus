@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "tipo": "ME",
+    "pergunta": "Qual linguagem é utilizada pelo Flutter?",
+    "peso": 10,
+
+    "alternativas": [
+      {
+        "letra": "A",
+        "texto": "Java",
+        "correta": false
+      },
+      {
+        "letra": "B",
+        "texto": "Dart",
+        "correta": true
+      },
+      {
+        "letra": "C",
+        "texto": "Python",
+        "correta": false
+      },
+      {
+        "letra": "D",
+        "texto": "Kotlin",
+        "correta": false
+      }
+    ]
+  },
+
+  {
+    "id": 2,
+    "tipo": "ME",
+    "pergunta": "Qual widget é utilizado para criar listas roláveis?",
+    "peso": 10,
+
+    "alternativas": [
+      {
+        "letra": "A",
+        "texto": "Container",
+        "correta": false
+      },
+      {
+        "letra": "B",
+        "texto": "Column",
+        "correta": false
+      },
+      {
+        "letra": "C",
+        "texto": "ListView",
+        "correta": true
+      },
+      {
+        "letra": "D",
+        "texto": "Padding",
+        "correta": false
+      }
+    ]
+  },
+
+  {
+    "id": 3,
+    "tipo": "VF",
+    "pergunta": "Flutter permite desenvolvimento Android e iOS.",
+    "peso": 5,
+    "correta": true
+  },
+
+  {
+    "id": 4,
+    "tipo": "VF",
+    "pergunta": "O widget Scaffold serve apenas para estilização.",
+    "peso": 5,
+    "correta": false
+  },
+
+  {
+    "id": 5,
+    "tipo": "REL",
+    "pergunta": "Relacione os conceitos abaixo.",
+    "peso": 15,
+
+    "pares": [
+      {
+        "termo": "CPU",
+        "conceito": "Processador"
+      },
+      {
+        "termo": "RAM",
+        "conceito": "Memória Temporária"
+      },
+      {
+        "termo": "SSD",
+        "conceito": "Armazenamento"
+      }
+    ]
+  },
+
+  {
+    "id": 6,
+    "tipo": "REL",
+    "pergunta": "Relacione as siglas corretamente.",
+    "peso": 15,
+
+    "pares": [
+      {
+        "termo": "UI",
+        "conceito": "Interface do Usuário"
+      },
+      {
+        "termo": "UX",
+        "conceito": "Experiência do Usuário"
+      },
+      {
+        "termo": "TI",
+        "conceito": "Tecnologia da Informação"
+      }
+    ]
+  }
+]
