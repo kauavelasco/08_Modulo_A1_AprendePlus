@@ -1,4 +1,5 @@
 import 'package:aprender_plus/models/questao_model.dart';
+import 'package:aprender_plus/screens/home/home_screen.dart';
 import 'package:aprender_plus/screens/quiz/me_screen.dart';
 import 'package:aprender_plus/screens/quiz/rel_screen.dart';
 import 'package:aprender_plus/screens/quiz/vf_screen.dart';
@@ -50,7 +51,11 @@ class _QuizScreenState extends State<QuizScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => HomeScreen(),
+                  ),
+                );
               }, 
               child: Text('OK'),
             ),
