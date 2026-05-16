@@ -13,8 +13,48 @@ class VfScreen extends StatefulWidget {
 }
 
 class _VfScreenState extends State<VfScreen> {
+
+  bool? respostaSelecionada;
+  bool respondeu = false;
+
   @override
   Widget build(BuildContext context) {
+
+    final bool correta = widget.questao.correta!;
+    final bool verdadeiroSelecionado = respostaSelecionada == true;
+    final bool falsoSelecionado = respostaSelecionada == false;
+
+    Color corVerdadeiro = Color(0xFF101010);
+    Color corFalso = Color(0xFF101010);
+
+    if (respondeu) {
+
+      if (correta) {
+        corVerdadeiro = Color(0xFF3C00A7);
+      } else {
+        corFalso = Color(0xFF3C00A7);
+      }
+
+      if (verdadeiroSelecionado && !correta) {
+        corVerdadeiro = Color(0xFF1E0053);
+      }
+
+      if (falsoSelecionado && correta) {
+        corFalso = Color(0xFF1E0053);
+      }
+
+    } else {
+
+      if (verdadeiroSelecionado) {
+        corVerdadeiro = Color(0xFF3C00A7);
+      }
+
+      if (falsoSelecionado) {
+        corFalso = Color(0xFF3C00A7);
+      }
+
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -47,22 +87,30 @@ class _VfScreenState extends State<VfScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: respondeu ? null : () {
+                        setState(() {
+                          respostaSelecionada = true;
+                        });
+                      },
                       child: Text(
                         'Verdadeiro',
                         style: TextStyle(
-                          color: Color(0xFF101010),
+                          color: corVerdadeiro,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: respondeu ? null : () {
+                        setState(() {
+                          respostaSelecionada = false;
+                        });
+                      },
                       child: Text(
                         'Falso',
                         style: TextStyle(
-                          color: Color(0xFF101010),
+                          color: corFalso,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -100,9 +148,27 @@ class _VfScreenState extends State<VfScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  onPressed: () {}, 
+                  onPressed: respostaSelecionada != null ? () {
+                    if (!respondeu) {
+                      if (respostaSelecionada == correta) {
+                        widget.onScore(
+                          widget.questao.peso
+                        );
+                      }
+                      setState(() {
+                          respondeu = true;
+                        });
+                    } else {
+                      setState(() {
+                        respostaSelecionada = null;
+                        respondeu = false;
+                      });
+
+                      widget.onNext();
+                    }
+                  } : null, 
                   child: Text(
-                     'Próximo',
+                     respondeu ? 'Próximo' : 'Responder',
                     style: TextStyle(
                       color: Color(0xFFFCFCFC),
                       fontSize: 16,

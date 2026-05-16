@@ -54,6 +54,7 @@ class _MeScreenState extends State<MeScreen> {
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(vertical: 50, horizontal: 20),
                 scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
                 itemCount: alternativas.length,
                 itemBuilder: (context, index) {
                   final letra = alternativas[index]['letra'];
@@ -67,7 +68,7 @@ class _MeScreenState extends State<MeScreen> {
                     if (isCorrect) {
                       cor = Color(0xFF3C00A7);
                     } else if (isSelected) {
-                      
+                      cor = Color(0xFF1E0053);
                     }
                   } else if (isSelected) {
                     cor = Color(0xFF3C00A7);
@@ -148,11 +149,12 @@ class _MeScreenState extends State<MeScreen> {
                               respondeu = true;
                             });
                           } else {
-                            widget.onNext();
+
                             setState(() {
                               selectedIndex = null;
                               respondeu = false;
                             });
+                            widget.onNext();
                           }
                         }
                       : null,
