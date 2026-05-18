@@ -1,3 +1,4 @@
+import 'package:aprender_plus/screens/genius/genius_screen.dart';
 import 'package:aprender_plus/screens/quiz/quiz_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -89,7 +90,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) => GeniusScreen(),
+                          ),
+                        );
+                      },
                     ),
                     Divider(
                       color: Color(0xFF3C00A7),
