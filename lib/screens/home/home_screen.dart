@@ -1,5 +1,6 @@
 import 'package:aprender_plus/screens/quiz/quiz_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -116,7 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        SystemNavigator.pop();
+                      },
                     ),
                     Divider(
                       color: Color(0xFF3C00A7),

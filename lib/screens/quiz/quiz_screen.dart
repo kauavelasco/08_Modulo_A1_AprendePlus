@@ -43,6 +43,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void finalizarQuiz() {
     showDialog(
+      barrierDismissible: false,
       context: context, 
       builder: (_) {
         return AlertDialog(
