@@ -11,6 +11,23 @@ class _GeniusScreenState extends State<GeniusScreen> {
   String itemSelecionado = "Português";
   final List<String> options = ['Português', 'English', 'Español'];
 
+  Widget colorButton({
+    required Color cor,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 120,
+        height: 30,
+        decoration: BoxDecoration(
+          color: cor,
+          borderRadius: BorderRadius.circular(0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,15 +110,61 @@ class _GeniusScreenState extends State<GeniusScreen> {
               ],
             ),
             Spacer(),
-            Center(
-              child: Container(
-                width: 250,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 182, 179, 179),
-                  borderRadius: BorderRadius.circular(30),
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    colorButton(
+                      cor: Colors.green, 
+                      onTap: () {}
+                    ),
+                    colorButton(
+                      cor: Colors.yellow, 
+                      onTap: () {}
+                    )
+                  ],
                 ),
-              ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color(0xFF3C00A7),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onPressed: () {}, 
+                    child: Text(
+                      'Start',
+                      style: TextStyle(
+                        color: Color(0xFFFCFCFC),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    colorButton(
+                      cor: Colors.orange,
+                      onTap: () {}
+                    ),
+                    colorButton(
+                      cor: Colors.blue,
+                      onTap: () {}
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                colorButton(
+                  cor: Colors.red,
+                  onTap: () {}
+                ),
+              ],
             ),
             Spacer(),
             Row(
