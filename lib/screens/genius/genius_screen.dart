@@ -1,3 +1,5 @@
+import 'package:aprender_plus/models/idioma_model.dart';
+import 'package:aprender_plus/services/genius_service.dart';
 import 'package:flutter/material.dart';
 
 class GeniusScreen extends StatefulWidget {
@@ -8,12 +10,29 @@ class GeniusScreen extends StatefulWidget {
 }
 
 class _GeniusScreenState extends State<GeniusScreen> {
-  String itemSelecionado = "Português";
-  final List<String> options = ['Português', 'English', 'Español'];
+  String itemSelecionado = "";
 
   bool emJogo = false;
   int score = 0;
   int nivel = 1;
+
+  IdiomaModel? idiomaAtual;
+  List<IdiomaModel> idiomas = [];
+  final service = GeniusService();
+
+  @override
+  void initState() {
+    super.initState();
+    service.carregarDados().then((value) {
+      if (value.idiomas.isEmpty) return;
+
+      setState(() {
+        idiomas = value.idiomas;
+        itemSelecionado = idiomas.first.nome;
+        idiomaAtual = idiomas.first;
+      });
+    });
+  }
   
 
   void adicionarPonto(int ponto) {
@@ -54,8 +73,8 @@ class _GeniusScreenState extends State<GeniusScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 120,
-        height: 30,
+        width: 140,
+        height: 60,
         decoration: BoxDecoration(
           color: cor,
           borderRadius: BorderRadius.circular(0),
@@ -66,6 +85,15 @@ class _GeniusScreenState extends State<GeniusScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (idiomaAtual == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -97,11 +125,11 @@ class _GeniusScreenState extends State<GeniusScreen> {
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 ),
-                items: options.map((String opcao) {
+                items: idiomas.map((idioma) {
                   return DropdownMenuItem<String>(
-                    value: opcao,
+                    value: idioma.nome,
                     child: Text(
-                      opcao,
+                      idioma.nome,
                       style: TextStyle(color: Color(0xFF3C00A7)),
                     ),
                   );
@@ -110,6 +138,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
                   setState(() {
                     itemSelecionado = value!;
                   });
+                  idiomaAtual = idiomas.firstWhere((idioma) => idioma.nome == itemSelecionado);
                 },
                 validator: (value) {
                   if (value == null) {
