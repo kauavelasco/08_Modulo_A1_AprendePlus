@@ -1,5 +1,6 @@
 import 'package:aprender_plus/models/questao_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RelScreen extends StatefulWidget {
   final QuestaoModel questao;
@@ -29,6 +30,10 @@ class _RelScreenState extends State<RelScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
     carregarQuestao();
   }
 
@@ -39,6 +44,17 @@ class _RelScreenState extends State<RelScreen> {
     if (oldWidget.questao.id != widget.questao.id) {
       carregarQuestao();
     } 
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
 
   void carregarQuestao() {
