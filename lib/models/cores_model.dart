@@ -1,8 +1,10 @@
 class CoresModel {
+  final String id;
   final String nome;
   final String audio;
 
   CoresModel({
+    required this.id,
     required this.nome,
     required this.audio
   });
@@ -11,8 +13,9 @@ class CoresModel {
     Map<String, dynamic> map
   ) {
     return CoresModel(
-      nome: map['nome'],
-      audio: map['audio']
+      id: map['id'] ?? '',
+      nome: map['nome'] ?? '',
+      audio: map['audio'] ?? ''
     );
   }
 }

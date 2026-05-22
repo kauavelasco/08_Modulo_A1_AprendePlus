@@ -14,11 +14,9 @@ class IdiomaModel {
   ) {
     return IdiomaModel(
       nome: map['nome'],
-      cores: List<CoresModel>.from(
-        map['cores'].map(
-          (e) => CoresModel.fromMap(e),
-        ),
-      ),
+      cores: (map['cores'] as List)
+              .map((e) => CoresModel.fromMap(e))
+              .toList(),
     );
   }
 }
