@@ -40,7 +40,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
 
   } catch (e) {
 
-    print(e);
+    throw Exception(e);
 
   }
 }
@@ -62,8 +62,6 @@ class _GeniusScreenState extends State<GeniusScreen> {
     );
 
     sequenciaJogo.add(numeroAleatorio);
-    print('SEQUENCIA JOGO: $sequenciaJogo');
-  
   }
 
   Future<void> mostrarSequencia() async {
@@ -112,7 +110,6 @@ class _GeniusScreenState extends State<GeniusScreen> {
     });
 
     sequenciaJogador.add(indice);
-    print('SEQUENCIA JOGADOR: $sequenciaJogador');
 
       if (sequenciaJogador.length == sequenciaJogo.length) {
         iguais = listEquals(sequenciaJogo, sequenciaJogador);
