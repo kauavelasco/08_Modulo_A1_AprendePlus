@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 
 class GeniusScreen extends StatefulWidget {
   const GeniusScreen({super.key});
@@ -21,6 +22,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
   bool emJogo = false;
   int score = 0;
   int nivel = 1;
+  int sequenciaCorretas = 0;
 
   IdiomaModel? idiomaAtual;
   List<IdiomaModel> idiomas = [];
@@ -50,6 +52,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
   List<int> sequenciaJogo = [];
   List<int> sequenciaJogador = [];
   int? corAtiva;
+  bool? iguais;
 
   bool mostrandoSequencia = false;
 
@@ -59,7 +62,8 @@ class _GeniusScreenState extends State<GeniusScreen> {
     );
 
     sequenciaJogo.add(numeroAleatorio);
-    print(sequenciaJogo);
+    print('SEQUENCIA JOGO: $sequenciaJogo');
+  
   }
 
   Future<void> mostrarSequencia() async {
@@ -79,13 +83,13 @@ class _GeniusScreenState extends State<GeniusScreen> {
         cores[indice].audio,
       );
 
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(milliseconds: 700));
 
       setState(() {
         corAtiva = null;
       });
 
-      await Future.delayed(Duration(milliseconds: 300));
+      await Future.delayed(Duration(milliseconds: 700));
     }
     mostrandoSequencia = false;
   }
@@ -93,24 +97,43 @@ class _GeniusScreenState extends State<GeniusScreen> {
   void jogar(int indice) async {
     if (mostrandoSequencia) return;
 
-    final cores = idiomaAtual!.cores;
-
     setState(() {
       corAtiva = indice;
     });
 
     tocarAudio(
-      cores[indice].audio,
+      'audio/genius/Click.mp3',
     );
 
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(Duration(milliseconds: 700));
 
     setState(() {
       corAtiva = null;
     });
 
     sequenciaJogador.add(indice);
-    print(sequenciaJogador);
+    print('SEQUENCIA JOGADOR: $sequenciaJogador');
+
+      if (sequenciaJogador.length == sequenciaJogo.length) {
+        iguais = listEquals(sequenciaJogo, sequenciaJogador);
+      
+        if (iguais!) {
+          adicionarPonto(5);
+          sequenciaJogador.clear();
+          sequenciaCorretas++;
+          if (sequenciaCorretas == 2) {
+            proximoNivel();
+            setState(() {
+              sequenciaCorretas = 0;
+            });
+          }
+          adicionarNovaCor();
+          await Future.delayed(Duration(seconds: 1));
+          mostrarSequencia();
+        } else {
+          finalizarJogo();
+      }
+    }
   }
 
   void startTimer() {
@@ -128,15 +151,6 @@ class _GeniusScreenState extends State<GeniusScreen> {
 
   void stopTimer() {
     timer?.cancel();
-    setState(() {
-      minutos = 0;
-      segundos = 0;
-    });
-  }
-
-  void resetTimer() {
-    timer?.cancel();
-
     setState(() {
       minutos = 0;
       segundos = 0;
@@ -189,29 +203,64 @@ class _GeniusScreenState extends State<GeniusScreen> {
 
     setState(() {
       emJogo = false;
-      nivel = 1;
-      score = 0;
       corAtiva = null;
+      nivel = 0;
+      sequenciaCorretas = 0;
     });
-    resetTimer();
 
     await Future.delayed(
       Duration(seconds: 2),
     );
 
-    setState(() {
-      emJogo = true;
-    });
-    startTimer();
+    iniciarJogo();
   }
 
   void finalizarJogo() {
+    stopTimer();
+    showDialog(
+      context: context, 
+      builder: (_) {
+        return AlertDialog(
+          title: Text(
+            'Genius finalizado',
+            style: TextStyle(
+              color: Color(0xFF3C00A7),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text('Sua pontuação foi: $score'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              }, 
+              child: Text('OK'),
+            ),
+          ],
+        );
+      }
+    );
     setState(() {
       emJogo = false;
-      score = 0;
       corAtiva = null;
+      nivel = 1;
+      sequenciaCorretas = 0;
+    });
+  }
+
+  void iniciarJogo() async {
+    setState(() {
+      emJogo = true;
+      score = 0;
     });
     stopTimer();
+    sequenciaJogo.clear();
+    sequenciaJogador.clear();
+
+    adicionarNovaCor();
+    mostrarSequencia();
+    startTimer();
   }
 
   Color pegarCor(String id) {
@@ -239,7 +288,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
   }) {
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: emJogo ? onTap : null,
       child: Container(
         width: 140,
         height: 60,
@@ -305,16 +354,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
                     finalizarJogo();
                   }
                 : () {
-                    setState(() {
-                      emJogo = true;
-                    });
-                    resetTimer();
-                    sequenciaJogo.clear();
-                    sequenciaJogador.clear();
-
-                    adicionarNovaCor();
-                    mostrarSequencia();
-                    startTimer();
+                    iniciarJogo();
                   },
             child: Text(
               emJogo ? 'Stop' : 'Start',
@@ -426,8 +466,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
                     itemSelecionado = value!;
                   });
                   idiomaAtual = idiomas.firstWhere(
-                    (idioma) =>
-                        idioma.nome == itemSelecionado,
+                    (idioma) => idioma.nome == itemSelecionado,
                   );
                 },
               ),

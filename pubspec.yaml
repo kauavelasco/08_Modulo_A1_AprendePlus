@@ -75,6 +75,7 @@ flutter:
 
   assets:
     - assets/json/
+    - assets/audio/genius/
     - assets/audio/genius/en/
     - assets/audio/genius/es/
     - assets/audio/genius/pt/
