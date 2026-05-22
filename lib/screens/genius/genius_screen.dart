@@ -180,7 +180,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
         itemSelecionado = idiomaSistema.nome;
       });
     }).catchError((e) {
-      print(e);
+      throw Exception(e);
     });
   }
 
