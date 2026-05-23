@@ -23,6 +23,7 @@ class _GeniusScreenState extends State<GeniusScreen> {
   int score = 0;
   int nivel = 1;
   int sequenciaCorretas = 0;
+  int gameId = 0;
 
   IdiomaModel? idiomaAtual;
   List<IdiomaModel> idiomas = [];
@@ -65,30 +66,45 @@ class _GeniusScreenState extends State<GeniusScreen> {
   }
 
   Future<void> mostrarSequencia() async {
-
     if (mostrandoSequencia) return;
 
     mostrandoSequencia = true;
 
+    final int rodadaAtual = gameId;
     final cores = idiomaAtual!.cores;
 
     for (int indice in sequenciaJogo) {
+      if (rodadaAtual != gameId || !emJogo) {
+        mostrandoSequencia = false;
+        return;
+      }
+
       setState(() {
         corAtiva = indice;
       });
 
-      tocarAudio(
+      await tocarAudio(
         cores[indice].audio,
       );
 
-      await Future.delayed(Duration(milliseconds: 700));
+      await Future.delayed(
+        const Duration(milliseconds: 700),
+      );
+
+      if (rodadaAtual != gameId || !emJogo) {
+        mostrandoSequencia = false;
+        return;
+      }
 
       setState(() {
         corAtiva = null;
       });
 
-      await Future.delayed(Duration(milliseconds: 700));
+      await Future.delayed(
+        const Duration(milliseconds: 700),
+      );
     }
+
     mostrandoSequencia = false;
   }
 
@@ -197,22 +213,25 @@ class _GeniusScreenState extends State<GeniusScreen> {
   }
 
   void resetGame() async {
+    gameId++;
 
     setState(() {
       emJogo = false;
       corAtiva = null;
-      nivel = 0;
+      nivel = 1;
       sequenciaCorretas = 0;
     });
 
     await Future.delayed(
-      Duration(seconds: 2),
+      const Duration(seconds: 2),
     );
 
     iniciarJogo();
   }
 
   void finalizarJogo() {
+    gameId++;
+    mostrandoSequencia = false;
     stopTimer();
     showDialog(
       context: context, 
@@ -246,12 +265,16 @@ class _GeniusScreenState extends State<GeniusScreen> {
     });
   }
 
-  void iniciarJogo() async {
+ void iniciarJogo() {
+    gameId++;
+
     setState(() {
       emJogo = true;
       score = 0;
     });
+
     stopTimer();
+
     sequenciaJogo.clear();
     sequenciaJogador.clear();
 

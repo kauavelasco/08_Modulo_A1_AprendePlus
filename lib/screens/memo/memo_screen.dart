@@ -13,6 +13,15 @@ class MemoScreen extends StatefulWidget {
 class _MemoScreenState extends State<MemoScreen> {
 
   List<TemaModel> temas = [];
+  TemaModel? temaAtual;
+  String itemSelecionado = '';
+
+  List<String> cartas = [];
+
+  bool emJogo = false;
+  bool cooldown = false;
+
+  int contador = 3;
 
   final service = MemoService();
 
@@ -26,12 +35,80 @@ class _MemoScreenState extends State<MemoScreen> {
     service.carregarDados().then((value) {
       setState(() {
         temas = value.temas;
+        temaAtual = temas.first;
+        itemSelecionado = temaAtual!.nome;
       });
     });
   }
 
+  void gerarCartas() {
+    if (temaAtual == null) return;
+
+    cartas = [
+      ...temaAtual!.imagens,
+      ...temaAtual!.imagens,
+    ];
+
+    cartas.shuffle();
+  }
+
+  void iniciarJogo() async {
+    if (cooldown) return;
+
+    setState(() {
+      cooldown = true;
+      contador = 3;
+    });
+
+    for (int i = 3; i > 0; i--) {
+      setState(() {
+        contador = i;
+      });
+
+      await Future.delayed(Duration(seconds: 1));
+    }
+
+    gerarCartas();
+
+    setState(() {
+      cooldown = false;
+      emJogo = true;
+    });
+  }
+
+  void finalizarJogo() {
+    setState(() {
+      emJogo = false;
+      cartas.clear();
+    });
+  }
+
+  Widget cartaWidget() {
+    return Container(
+      width: 195,
+      height: 195,
+      decoration: BoxDecoration(
+        color: Color(0xFFFCFCFC),
+        border: Border.all(
+          color: Color(0xFF3C00A7),
+          width: 3,
+        ),
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    if (temaAtual == null) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -158,7 +235,83 @@ class _MemoScreenState extends State<MemoScreen> {
                 ),
               ],
             ),
-            Spacer(),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          cartaWidget(),
+                          SizedBox(width: 16),
+                          cartaWidget()
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          cartaWidget(),
+                          SizedBox(width: 16),
+                          cartaWidget()
+                        ],
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF3C00A7),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 35, vertical: 18),
+                      ),
+                      onPressed: cooldown ? null : () {
+                        if (emJogo) {
+                          finalizarJogo();
+                        } else {
+                          iniciarJogo();
+                        }
+                      },
+                      child: Text(
+                        cooldown
+                          ? contador.toString()
+                          : emJogo
+                            ? 'Stop'
+                            : 'Start',
+                        style: TextStyle(
+                          color: Color(0xFFFCFCFC),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          cartaWidget(),
+                          SizedBox(width: 16),
+                          cartaWidget()
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: [
+                          cartaWidget(),
+                          SizedBox(width: 16),
+                          cartaWidget()
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -173,7 +326,57 @@ class _MemoScreenState extends State<MemoScreen> {
                       ),
                     ),
                     SizedBox(width: 4),
+                    SizedBox(
+                      width: 400,
+                      child: IgnorePointer(
+                        ignoring: emJogo,
+                        child: DropdownButtonFormField<String>(
+                          initialValue: itemSelecionado,
+                          dropdownColor: Color(0xFFFCFCFC),
+                          decoration: InputDecoration(
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFF3C00A7),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFF3C00A7),
+                              ),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFF3C00A7),
+                                width: 2,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 40,
+                              vertical: 4,
+                            ),
+                          ),
+                          items: temas.map((tema) {
+                            return DropdownMenuItem(
+                              value: tema.nome,
+                              child: Text(tema.nome),
+                            );
+                          }).toList(), 
+                          onChanged: (String? value) {
+                            setState(() {
+                              itemSelecionado = value!;
+                        
+                              temaAtual = temas.firstWhere((tema) => tema.nome == itemSelecionado);
+                            });
+                          }
+                        ),
+                      ),
+                    ),
                   ],
+                ),
+                Icon(
+                  Icons.engineering,
+                  size: 40,
+                  color: Color(0xFF3C00A7),
                 ),
               ],
             ),
