@@ -79,6 +79,8 @@ flutter:
     - assets/audio/genius/en/
     - assets/audio/genius/es/
     - assets/audio/genius/pt/
+    - assets/images/memocheck/tema1/
+    - assets/images/memocheck/tema2/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
