@@ -4,6 +4,7 @@ import 'package:aprender_plus/screens/quiz/me_screen.dart';
 import 'package:aprender_plus/screens/quiz/rel_screen.dart';
 import 'package:aprender_plus/screens/quiz/vf_screen.dart';
 import 'package:aprender_plus/services/quiz_service.dart';
+import 'package:aprender_plus/services/score_service.dart';
 import 'package:flutter/material.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -41,9 +42,13 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
-  void finalizarQuiz() {
+  void finalizarQuiz() async {
+
+    await ScoreService.salvarQuiz(score);
+
     showDialog(
       barrierDismissible: false,
+      // ignore: use_build_context_synchronously
       context: context, 
       builder: (_) {
         return AlertDialog(

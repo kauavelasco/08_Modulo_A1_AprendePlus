@@ -1,5 +1,6 @@
 import 'package:aprender_plus/models/tema_model.dart';
 import 'package:aprender_plus/services/memo_service.dart';
+import 'package:aprender_plus/services/score_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -121,7 +122,7 @@ class _MemoScreenState extends State<MemoScreen> {
       visiveis = true;
     });
 
-    await Future.delayed(Duration(milliseconds: 800), () {
+    await Future.delayed(Duration(seconds: 1), () {
       if (!mounted) return;
 
       setState(() {
@@ -184,11 +185,14 @@ class _MemoScreenState extends State<MemoScreen> {
 
   void mostrarResultado({
     bool venceu = false,
-  }) {
+  }) async {
     stopTimer();
+
+    await ScoreService.salvarMemo(acertos);
 
     showDialog(
       barrierDismissible: false,
+      // ignore: use_build_context_synchronously
       context: context, 
       builder: (_) {
         return AlertDialog(

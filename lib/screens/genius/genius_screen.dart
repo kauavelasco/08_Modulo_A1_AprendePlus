@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:aprender_plus/models/cores_model.dart';
 import 'package:aprender_plus/models/idioma_model.dart';
 import 'package:aprender_plus/services/genius_service.dart';
+import 'package:aprender_plus/services/score_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
@@ -229,11 +230,13 @@ class _GeniusScreenState extends State<GeniusScreen> {
     iniciarJogo();
   }
 
-  void finalizarJogo() {
+  void finalizarJogo() async {
     gameId++;
     mostrandoSequencia = false;
     stopTimer();
+    await ScoreService.salvarGenius(score);
     showDialog(
+      // ignore: use_build_context_synchronously
       context: context, 
       builder: (_) {
         return AlertDialog(
